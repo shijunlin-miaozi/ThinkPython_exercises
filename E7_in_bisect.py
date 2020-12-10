@@ -82,3 +82,10 @@ def in_bisect(word_list, target):
 
 
 # Or there is in-built bisect function from module bisect
+import bisect
+
+def in_bisect_module(word_list, word):
+    i = bisect.bisect_left(word_list, word)
+    if i == len(word_list):
+        return False
+    return word_list[i] == word

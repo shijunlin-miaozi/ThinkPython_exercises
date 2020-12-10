@@ -4,14 +4,14 @@
 # that finds all the reverse pairs in the word list.
 
 
-from E7_in_bisect import in_bisect, convert_to_list
+from E7_in_bisect import in_bisect_module, convert_to_list
 
 
 def reverse_pair(word_list):
     t = []
     for word in word_list:
         reverse = word[::-1]
-        if in_bisect(word_list, reverse):
+        if in_bisect_module(word_list, reverse):
             # exclude palindromic words (e.g "aa")
             if reverse != word:
                 t.append([word, reverse])
