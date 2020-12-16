@@ -15,7 +15,7 @@
 # Write a function called in_bisect that takes a sorted list and a target value and returns the index of the 
 # value in the list if it's there, or None if it's not.
 
-def convert_to_list(file):
+def convert_to_list(file="words.txt"):
     # convert data into a list
     t = []
     with open(file) as f:
@@ -59,7 +59,7 @@ def in_bisect_index(word_list, target):
             return None
 
 if __name__ == '__main__':
-    sorted_t = convert_to_list("words.txt")
+    sorted_t = convert_to_list()
     for i in ["zz", "xx", "yy", "mom", "aa", "longshoremen", "zymurgy"]:
         print(in_bisect_index(sorted_t, i))
 
