@@ -1,6 +1,4 @@
 
-# >>>>>>>>>>>>>>>>>>>>>>>> WORK IN PROGRESS >>>>>>>>>>>>>>>>>>>>>>>>>>
-
 # Think Python 2nd Edition book_Ch13.data structure selection_p125
 
 # Exercise 13.1. 
@@ -53,12 +51,18 @@ def book_to_word_dict(filename, start_line=1): # start_line used to skip header 
 
 if __name__ == '__main__':
 
-	d = book_to_word_dict('Pride_and_Prejudice_by_Jane_Austen.txt', 167)
-	print(len(d))
+	d_austen = book_to_word_dict('Pride_and_Prejudice_by_Jane_Austen.txt', 167)
+	print(f"num of different words used in Austen's book:  {len(d_austen)}")
 
-	sorted_word_list = sorted([(freq, word) for word, freq in d.items()], reverse=True)
+	d_hardy = book_to_word_dict("Tess_of_the_d'Urbervilles_by_Thomas_Hardy.txt", 291)
+	print(f"num of different words used in Hardy's book:  {len(d_hardy)}")
+
+	sorted_word_list_austen = sorted(d_austen.items(), key=lambda x: x[1], reverse=True)
 	for i in range(20):
-		print(sorted_word_list[i][1])
+		print(f"top {i + 1}:  {sorted_word_list_austen[i][0]}")
 
-
-# >>>>>>>>>>>>>>>>>>>>>>>> WORK IN PROGRESS >>>>>>>>>>>>>>>>>>>>>>>>>>
+	word_list = set([line.strip() for line in open("words.txt")])
+	for key in d_austen.keys():
+		if key not in word_list:
+			print(key)
+			
