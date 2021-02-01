@@ -35,7 +35,7 @@ import string
 def book_to_word_dict(filename, start_line=1): # start_line used to skip header info (line num as in txt file), otherwise it reads file from beginning
 	whitespace = string.whitespace.replace(' ', '') # remove ' '(space) as it neeeds to stay to split line into words
 	punctuation = string.punctuation
-	trans_table = str.maketrans('', '', whitespace + punctuation + '“”') 
+	trans_table = str.maketrans('—', ' ', whitespace + punctuation + '“”‘’') 
 	d, end_line = {}, float('inf')
 	with open (filename) as f:
 		for index, line in enumerate(f):
@@ -52,17 +52,18 @@ def book_to_word_dict(filename, start_line=1): # start_line used to skip header 
 if __name__ == '__main__':
 
 	d_austen = book_to_word_dict('Pride_and_Prejudice_by_Jane_Austen.txt', 167)
-	print(f"num of different words used in Austen's book:  {len(d_austen)}")
+	print(f"Austen's book:\n  word count: {sum(d_austen.values()): ,}\n  unique words: {len(d_austen): ,}")
 
 	d_hardy = book_to_word_dict("Tess_of_the_d'Urbervilles_by_Thomas_Hardy.txt", 291)
-	print(f"num of different words used in Hardy's book:  {len(d_hardy)}")
+	print(f"Hardy's book:\n  word count: {sum(d_hardy.values()): ,}\n  unique words: {len(d_hardy): ,}")
 
 	sorted_word_list_austen = sorted(d_austen.items(), key=lambda x: x[1], reverse=True)
+	print(f"Top 20 frequently used words in Austen's book: ")
 	for i in range(20):
 		print(f"top {i + 1}:  {sorted_word_list_austen[i][0]}")
 
 	word_list = set([line.strip() for line in open("words.txt")])
-	for key in d_austen.keys():
-		if key not in word_list:
-			print(key)
+	book_word_not_in_list = [word for word in d_austen.keys() if word not in word_list]
+	print(len(book_word_not_in_list))
+	print(book_word_not_in_list)
 			
