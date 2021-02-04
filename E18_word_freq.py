@@ -33,37 +33,34 @@
 import string
 
 def book_to_word_dict(filename, start_line=1): # start_line used to skip header info (line num as in txt file), otherwise it reads file from beginning
-	whitespace = string.whitespace.replace(' ', '') # remove ' '(space) as it neeeds to stay to split line into words
-	punctuation = string.punctuation
-	trans_table = str.maketrans('—', ' ', whitespace + punctuation + '“”‘’') 
 	d, end_line = {}, float('inf')
 	with open (filename) as f:
 		for index, line in enumerate(f):
 			if 'End of the Project Gutenberg EBook' in line:
 				end_line = index
 			if start_line - 1 <= index < end_line:
-				clean_line = line.translate(trans_table).lower().split()
-				for word in clean_line:
-					if not word.isdigit():
-						d[word] = d.setdefault(word, 0) + 1
+				for word in line.replace('—', ' ').split():
+					clean_word = word.strip(string.whitespace + string.punctuation + '“”‘’').lower()
+					if not clean_word.isdigit():
+						d[clean_word] = d.setdefault(clean_word, 0) + 1
 	return d
 
 
 if __name__ == '__main__':
 
 	d_austen = book_to_word_dict('Pride_and_Prejudice_by_Jane_Austen.txt', 167)
-	print(f"Austen's book:\n  word count: {sum(d_austen.values()): ,}\n  unique words: {len(d_austen): ,}")
+	print(f"Austen's book:\n  word count: {sum(d_austen.values()): ,}\n  unique words: {len(d_austen): ,}\n")
 
 	d_hardy = book_to_word_dict("Tess_of_the_d'Urbervilles_by_Thomas_Hardy.txt", 291)
-	print(f"Hardy's book:\n  word count: {sum(d_hardy.values()): ,}\n  unique words: {len(d_hardy): ,}")
+	print(f"Hardy's book:\n  word count: {sum(d_hardy.values()): ,}\n  unique words: {len(d_hardy): ,}\n")
 
 	sorted_word_list_austen = sorted(d_austen.items(), key=lambda x: x[1], reverse=True)
 	print(f"Top 20 frequently used words in Austen's book: ")
 	for i in range(20):
-		print(f"top {i + 1}:  {sorted_word_list_austen[i][0]}")
+		print(f"{sorted_word_list_austen[i][0]: >8}  {sorted_word_list_austen[i][1]}")
 
 	word_list = set([line.strip() for line in open("words.txt")])
 	book_word_not_in_list = [word for word in d_austen.keys() if word not in word_list]
-	print(len(book_word_not_in_list))
+	print(f"\nthere are {len(book_word_not_in_list)} words from austen's book are not in wordlist:\n")
 	print(book_word_not_in_list)
 			
