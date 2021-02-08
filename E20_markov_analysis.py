@@ -27,14 +27,16 @@ the sources in interesting ways.
 
 import random
 
-def process_file(filename, start_line=1): # start_line used to skip header info (line num as in txt file), otherwise it reads file from beginning
+
+def process_file(filename, start_line=1): # start_line used to skip header (line num as in txt file), otherwise it reads file from beginning
 	word_str = ''
 	with open (filename) as f:
-		for index, line in enumerate(f):
+		for i in range(start_line - 1):
+			next(f)
+		for line in f:
 			if line.startswith('End of the Project Gutenberg EBook'):
 				break
-			if start_line - 1 <= index:
-				word_str += line.replace('—', ' ') + ' '
+			word_str += line.replace('—', ' ') + ' '
 	words = tuple(word_str.split())
 	return words
 
@@ -47,14 +49,15 @@ def map_prefix_to_suffix(words, prefix_len):
 
 
 def create_random_text(words, prefix_len, num_of_sentences):
-	ctr, prefix_suffix_mapping = 0, map_prefix_to_suffix(words, prefix_len)
-	while True:
-		prefix = random.choice(list(prefix_suffix_mapping.keys()))
+	ctr, suffix_mapping = 0, map_prefix_to_suffix(words, prefix_len)
+	while True: 
+		# to start the text with a capital letter
+		prefix = random.choice(list(suffix_mapping.keys()))
 		if prefix[0].isupper():
 			break
 	sentences = prefix
 	while ctr < num_of_sentences:
-		suffix = random.choice(prefix_suffix_mapping[prefix])
+		suffix = random.choice(suffix_mapping[prefix])
 		sentences += ' ' + suffix
 		if '.' in suffix:
 			ctr += 1
